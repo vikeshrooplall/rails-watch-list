@@ -7,3 +7,20 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+require "faker"
+
+puts "Cleaning database..."
+Bookmark.destroy_all
+Movie.destroy_all
+List.destroy_all
+
+puts "Creating movies with Faker..."
+
+20.times do
+  Movie.create!(
+    title: Faker::Movie.unique.title,
+    overview: Faker::Lorem.paragraph(sentence_count: 3),
+    poster_url: Faker::Internet.url(host: 'example.com', path: '/poster.jpg'),
+  )
+  print "."
+end

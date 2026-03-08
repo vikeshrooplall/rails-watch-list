@@ -1,0 +1,25 @@
+<h1>Add a movie to: <%= @list.name %></h1>
+<%# Display error messages %>
+<% if @bookmark.errors.any? %>
+  <div class="error-messages">
+    <h3><%= pluralize(@bookmark.errors.count, "error") %> prevented this bookmark from being saved:</h3>
+    <ul>
+      <% @bookmark.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+<%= simple_form_for [@list, @bookmark] do |f| %>
+  <%= f.association :movie,
+    collection: @movies,
+    prompt: "Select a movie",
+    label: "Movie" %>
+
+  <%= f.input :comment,
+    placeholder: "Add a comment" %>
+
+  <%= f.button :submit, "Add to list" %>
+<% end %>
+
+<%= link_to "Back to lists", lists_path %>
