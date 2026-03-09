@@ -1,11 +1,24 @@
-<h2>List</h2>
+<%= image_tag"banner.jpg",
+ alt: "Create your favourite watchlist", class: "banner" %>
 
-<ul>
-  <% @lists.each do |list| %>
-    <li>
-      <%= link_to list.name, list_path(list) %>
-    </li>
-  <% end %>
-</ul>
-
-<%= link_to "Add list", new_list_path %>
+<div class="container">
+  <header>
+    <h2 class="title">My List</h2>
+    <%= link_to "Create a movie list", new_list_path %>
+  </header>
+  <div class="cards">
+    <% @lists.each do |list| %>
+        <div class="card">
+          <%= link_to list_path(list), class: "card-link" do %>
+            <div class="card-content">
+              <h2><%= list.name %></h2>
+            </div>
+          <% end %>
+          <div class="card-action">
+            <%= link_to "Delete", remove_list_path(list),
+              data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+          </div>
+        </div>
+    <% end %>
+  </div>
+</div>
