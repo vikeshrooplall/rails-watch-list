@@ -78,8 +78,10 @@
         <h4>You don't have any movies in this list yet"</h4>
       </div>
     <% end %>
+  </section>
 
-    <%# Add movie form %>
+  <%# Add movie section %>
+  <section>
     <div class="add-movie">
       <h3>Add a movie to this list</h3>
       <%= render 'bookmarks/form', list: @list, bookmark: @bookmark %>
@@ -89,6 +91,47 @@
       <div class="alert alert-danger">
         <ul>
           <% @bookmark.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  </section>
+
+  <%# Review section %>
+  <section>
+    <h2>Reviews (<%= @list.reviews.count %>)</h2>
+    <%# Review List %>
+    <div class="reviews-list">
+      <% if @list.reviews.any? %>
+        <% @list.reviews.each do |review| %>
+          <div class="review-card">
+            <div class="review-header">
+              <div class="review-rating">
+                <% review.rating.times do %>
+                  <span class="star">★</span>
+                <% end %>
+                <% (5 - review.rating).times do %>
+                  <span class="star empty">☆</span>
+                <% end %>
+              </div>
+              <span class="review-date"><%= time_ago_in_words(review.created_at) %> ago</span>
+            </div>
+            <p class="review-content"><%= review.content %></p>
+          </div>
+        <% end %>
+      <% else %>
+        <p class="no-reviews">No reviews yet. Be the first to review!</p>
+      <% end %>
+    </div>
+
+    <%# Review form %>
+    <%= render 'reviews/form', list: @list, review: @review %>
+    <%# Error messages %>
+    <% if @review.errors.any? %>
+      <div class="alert alert-danger">
+        <ul>
+          <% @review.errors.full_messages.each do |message| %>
             <li><%= message %></li>
           <% end %>
         </ul>
