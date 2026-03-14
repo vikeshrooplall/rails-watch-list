@@ -12,19 +12,71 @@
   </div>
 <% end %>
 
-<h2><%= @list.name %></h2>
-<%# Bookmark details %>
-<ul>
-  <% @list.bookmarks.each do |bookmark| %>
-    <li>
-      <strong><%= bookmark.movie.title %><br></strong>
-      <p>Comment: <%= bookmark.comment %> </p>
-    </li>
-    <%= link_to "remove", bookmark_path(bookmark),
-      data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}%>
+<nav>
+  <%= image_tag"popcorn.jpg",
+    alt: "logo", class: "navbar-logo" %>
+  <div class="nav-link">
+    <%= link_to "My List", root_path %>
+    <%= link_to "New List", new_list_path %>
+  </div>
+</nav>
 
-  <% end %>
-</ul>
-<%# buttons %>
-<%= link_to "Add a movie", new_list_bookmark_path(@list), class: "btn btn-primary" %>
-<%= link_to "Back to lists", lists_path %>
+<div class="show-banner">
+  <section class="banner-image">
+    <% if @list.image_url.present? %>
+      <%= image_tag @list.image_url, alt: @list.name %>
+    <% else %>
+      <div class="placeholder-image">
+        <span>No image</span>
+      </div>
+    <% end %>
+  </section>
+  <section class="banner-content">
+    <div class="movie-count">
+      <%= pluralize(@list.movies.count, 'Movie') %>
+    </div>
+    <div class="banner-title">
+      <h2><%= @list.name.upcase %></h2>
+    </div>
+  </section>
+</div>
+
+
+<div class="container">
+  <div class="button-header">
+    <%= button_to "Add Movie", new_list_bookmark_path(@list), method: :get, class: "btn-primary add" %>
+  </div>
+
+  <section>
+    <% if @list.movies.any? %>
+      <%# movies cards %>
+      <div class="cards show-cards">
+        <% @list.bookmarks.each do |bookmark| %>
+          <div class="card movie-card">
+            <%# movie image %>
+            <div class="card-image show">
+              <% if bookmark.movie.poster_url.present? %>
+                <%= image_tag bookmark.movie.poster_url, alt: bookmark.movie.title %>
+              <% else %>
+                <div class="placeholder-image movie-image">
+                  <span class="placeholder-text">No image</span>
+                </div>
+              <% end %>
+            </div>
+            <div class="card-body">
+              <div class="movie-title">
+                <h3><%= bookmark.movie.title.upcase %></h3>
+                <p><%= bookmark.movie.rating %></p>
+              </div>
+              <p class="movie-description"><%= bookmark.movie.overview %></p>
+              <%= button_to "Delete", bookmark_path(bookmark),
+                method: :delete,
+                data: { turbo_method: :delete, turbo_confirm: "Are you sure?" },
+                class: "btn-delete" %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </section>
+</div>
