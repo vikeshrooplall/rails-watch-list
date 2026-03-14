@@ -1,12 +1,12 @@
 class BookmarksController < ApplicationController
-  def new
-    # find list from nested route
-    @list = List.find(params[:list_id])
-    # build new bookmark associated with list
-    @bookmark = @list.bookmarks.new
-    # Get all movies for dropdown
-    @movies = Movie.all.order(:title)
-  end
+  # def new
+  #   # find list from nested route
+  #   @list = List.find(params[:list_id])
+  #   # build new bookmark associated with list
+  #   @bookmark = @list.bookmarks.new
+  #   # Get all movies for dropdown
+  #   @movies = Movie.all.order(:title)
+  # end
 
   def create
     @list = List.find(params[:list_id])

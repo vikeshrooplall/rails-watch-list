@@ -43,10 +43,6 @@
 
 
 <div class="container">
-  <div class="button-header">
-    <%= button_to "Add Movie", new_list_bookmark_path(@list), method: :get, class: "btn-primary add" %>
-  </div>
-
   <section>
     <% if @list.movies.any? %>
       <%# movies cards %>
@@ -76,6 +72,26 @@
             </div>
           </div>
         <% end %>
+      </div>
+    <% else %>
+      <div class="empty">
+        <h4>You don't have any movies in this list yet"</h4>
+      </div>
+    <% end %>
+
+    <%# Add movie form %>
+    <div class="add-movie">
+      <h3>Add a movie to this list</h3>
+      <%= render 'bookmarks/form', list: @list, bookmark: @bookmark %>
+    </div>
+
+    <% if @bookmark.errors.any? %>
+      <div class="alert alert-danger">
+        <ul>
+          <% @bookmark.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
       </div>
     <% end %>
   </section>
